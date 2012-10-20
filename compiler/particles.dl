@@ -1,0 +1,46 @@
+%{
+#include "Params.h"
+}%
+
+# Particle System
+
+function particles 
+input: vel[N]:float3, pos[N]:float3, params:Params, deltaTime:float
+output: new_vel[N]:float3, new_pos[N]:float3
+{
+  # integrate
+  vel += params.gravity * deltaTime;
+  vel *= params.globalDamping;
+  pos += vel * deltaTime;
+  if (pos.x > 1.0f - params.particleRadius) { pos.x = 1.0f - params.particleRadius; vel.x *= params.boundaryDamping; }
+  if (pos.x < -1.0f + params.particleRadius) { pos.x = -1.0f + params.particleRadius; vel.x *= params.boundaryDamping;}
+  if (pos.y > 1.0f - params.particleRadius) { pos.y = 1.0f - params.particleRadius; vel.y *= params.boundaryDamping; }
+  if (pos.y < -1.0f + params.particleRadius) { pos.y = -1.0f + params.particleRadius; vel.y *= params.boundaryDamping;}
+  if (pos.z > 1.0f - params.particleRadius) { pos.z = 1.0f - params.particleRadius; vel.z *= params.boundaryDamping; }
+  if (pos.z < -1.0f + params.particleRadius) { pos.z = -1.0f + params.particleRadius; vel.z *= params.boundaryDamping;}  
+
+  # calc hash
+  gridPos = floor((pos - params.worldOrigin)/params.cellSize);
+#  ...
+
+  # collide
+  #pragma level warp
+  map {
+     cellID := [0: CellSize);
+     #pragma level thread
+     map {
+         particldId := [cellStart[cellID]: cellEnd[cellId]];
+         map {
+             neighborCellId := cellID.getNeighbors();
+             map {
+                 neighborId := cellStart[neighborCellId]: cellEnd[neighborCellId];
+                 _force0 = collide(vel[particleId], vel[neighborId]);
+             } reduce("+", force1, force0, neighborId:=[*]) ;
+         } reduce("+", force2, force1, neighborCellId:=[*]) ;
+         updateVel(force2);
+     };
+  };
+
+  
+}
+

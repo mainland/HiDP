@@ -1,0 +1,21 @@
+#pragma once
+#define WARP_KERNEL_SIZE 256
+#define WARP_KERNEL_WARP_SIZE 8
+
+#define WARP_KERNEL_SUBWARP_SIZE 8
+#define WARP_KERNEL_SUBWARP_NUM 32
+
+
+#define WARP_KERNEL_8SUBWARP_SIZE 4
+#define WARP_KERNEL_8SUBWARP_NUM 64
+
+#define WARP_KERNEL_16SUBWARP_SIZE 2
+#define WARP_KERNEL_16SUBWARP_NUM 128
+
+#define WARP_KERNEL_SUBWARP2_SIZE 4
+#define WARP_KERNEL_SUBWARP2_NUM 64
+
+typedef float DTYPE;
+//typedef int DTYPE;
+
+bool isIdentical(DTYPE *lhs, DTYPE *rhs, int size, const char *msg);

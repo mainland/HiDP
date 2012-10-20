@@ -1,0 +1,42 @@
+# quicksort
+
+function quicksort 
+inout: a1[size]:float, a2[size]:float
+{
+    num_tasks = 1;
+    taskbegin1[max_tasks]:int;
+    taskend1[max_tasks]:int;
+    taskbegin2[max_tasks]:int;
+    taskend2[max_tasks]:int;
+    taskbegin1[0] = 0;
+    taskend1[0] = size;
+    while(num_tasks < max_tasks)
+    {
+       map {
+         itask := [0:num_tasks);
+         _min = min(a1, taskbegin1[itask], taskend1[itask]);
+         _max = max(a1, taskbegin1[itask], taskend1[itask]);
+         _pivot = (_min + _max)/2;
+         partition(a1, a2, taskbegin1, taskend1, taskbegin2, taskend2);  # 
+         # need to copy the equal array to the final(destination) array
+         map {
+             i := [taskend2[itask*2] : taskstart2[itask*2] ];
+             a3[i] = a2[i];
+         }
+         map {
+             j := [taskend2[itask*2+1] : taskstart2[itask*2+1]];
+             a3[j] = a2[j];
+         }
+       } 
+       num_tasks <= 1;
+       swap(taskbegin1, taskbegin2);
+       swap(taskend1, taskend2);
+       swap(a1, a2);
+    }
+
+    #post processing
+    map{
+         itask := [0: num_tasks);
+         sort(a1, a3, taskbegin1[itask], taskend1[itask]);
+    }
+}

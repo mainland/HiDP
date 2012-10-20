@@ -1,0 +1,18 @@
+#c = alpha * a * b + beta * c
+
+function matrix_multiply
+input _alpha:float, a[I][K]:float, b[K][J]:float, _beta:float
+inout c[I][J]:float
+# input float _alpha, a[I][K], b[K][J], _beta;
+# inout float c[I][J];
+{
+# float c1[I][J];
+#  c0[I][J][K]:float;
+  c1[I][J]:float;
+  map{
+    i:=[0:I); j:=[0:J); k:= [0:K);
+    _c0 = a[i][k] * b[k][j];
+#    scan();
+  } reduce("+", c1[i][j], _c0, k:=[*]);
+  c = _alpha * c1 + _beta * c;
+}

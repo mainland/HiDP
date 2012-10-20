@@ -1,0 +1,1883 @@
+Terminals which are not used
+
+   p_map
+   p_sort
+   p_scan
+   p_reduce
+   MAX
+   MIN
+   MOD
+   RSHIFT
+   LSHIFT
+   NEQ
+   XOR
+   OR
+   AND
+   NOT
+   SELECT
+   RAND
+   FLOOR
+   CEIL
+   TRUNC
+   ROUND
+   LOG
+   SQRT
+   EXP
+   SIN
+   COS
+   TAN
+   ASIN
+   ACOS
+   ATAN
+   SINH
+   COSH
+   TANH
+   I_TO_F
+   I_TO_B
+   B_TO_I
+   PLUS_SCAN
+   MULT_SCAN
+   MAX_SCAN
+   MIN_SCAN
+   AND_SCAN
+   OR_SCAN
+   XOR_SCAN
+   PLUS_REDUCE
+   MULT_REDUCE
+   MAX_REDUCE
+   MIN_REDUCE
+   AND_REDUCE
+   OR_REDUCE
+   XOR_REDUCE
+   PERMUTE
+   DPERMUTE
+   FPERMUTE
+   BPERMUTE
+   BFPERMUTE
+   DFPERMUTE
+   EXTRACT
+   REPLACE
+   DIST
+   INDEX
+   LENGTH
+   MAKE_SEGDES
+   LENGTHS
+   COPY
+   POP
+   CPOP
+   PAIR
+   UNPAIR
+   CALL
+   RET
+   FUNC
+   IF
+   ELSE
+   ENDIF
+   CONST
+   EXIT
+   START_TIMER
+   STOP_TIMER
+   READ
+   WRITE
+   FOPEN
+   FCLOSE
+   FREAD
+   FREAD_CHAR
+   FWRITE
+   SPAWN
+   SRAND
+   INT
+   BOOL
+   SEGDES
+   CHAR
+   V_TRUE
+   V_FALSE
+   NULL_STREAM
+   STDIN
+   STDOUT
+   STDERR
+   MAIN
+   BEGIN_VECTOR
+   END_VECTOR
+   REAL
+   INPUT_INFO
+   OUTPUT_INFO
+
+
+Grammar
+
+    0 $accept: program $end
+
+    1 program: functions
+
+    2 functions: /* empty */
+    3          | function functions
+
+    4 @1: /* empty */
+
+    5 function: FUNCTION IDENTIFIER @1 function_prefix block
+
+    6 function_prefix: /* empty */
+    7                | function_prefix inputs
+    8                | function_prefix outputs
+    9                | function_prefix inouts
+
+   10 inputs: INPUT definition
+   11       | inputs COMA definition
+
+   12 outputs: OUTPUT definition
+   13        | outputs COMA definition
+
+   14 inouts: INOUT definition
+   15       | inouts COMA definition
+
+   16 definition: IDENTIFIER COLON IDENTIFIER
+   17           | IDENTIFIER brackets COLON IDENTIFIER
+   18           | IDENTIFIER ITER_ASSIGN range
+
+   19 brackets: OPENBRACKET aexpr CLOSEBRACKET
+   20         | brackets OPENBRACKET aexpr CLOSEBRACKET
+
+   21 @2: /* empty */
+
+   22 block: OPENBLOCK @2 statements CLOSEBLOCK
+
+   23 statements: statement SEMI statements
+   24           | /* empty */
+
+   25 statement: assignment
+   26          | definition
+   27          | map_block
+   28          | call_function
+
+   29 @3: /* empty */
+
+   30 map_block: MAP @3 block
+   31          | map_block call_function
+
+   32 call_function_prefix: IDENTIFIER OPENPAR
+   33                     | IDENTIFIER OPENPAR aexpr
+   34                     | call_function_prefix COMA aexpr
+   35                     | call_function_prefix COMA definition
+
+   36 call_function: call_function_prefix CLOSEPAR
+
+   37 assignment: aexpr ASSIGN aexpr
+   38           | aexpr PLUS_ASSIGN aexpr
+   39           | aexpr MINUS_ASSIGN aexpr
+   40           | aexpr MULTI_ASSIGN aexpr
+   41           | aexpr DIV_ASSIGN aexpr
+
+   42 aexpr: IDENTIFIER
+   43      | IDENTIFIER brackets
+   44      | OPENPAR aexpr CLOSEPAR
+   45      | INTEGER
+   46      | FLOAT
+   47      | ASTRING
+   48      | aexpr PLUS aexpr
+   49      | aexpr MINUS aexpr
+   50      | aexpr TIMES aexpr
+   51      | aexpr DIV aexpr
+   52      | aexpr EQ aexpr
+   53      | aexpr LE aexpr
+   54      | aexpr GE aexpr
+   55      | aexpr GT aexpr
+   56      | aexpr LT aexpr
+
+   57 range_internal: aexpr COLON aexpr
+   58               | range_internal COLON aexpr
+   59               | TIMES
+
+   60 range: OPENBRACKET range_internal CLOSEBRACKET
+   61      | OPENBRACKET range_internal CLOSEPAR
+   62      | OPENPAR range_internal CLOSEPAR
+   63      | OPENPAR range_internal CLOSEBRACKET
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+p_map (258)
+FUNCTION (259) 5
+p_sort (260)
+p_scan (261)
+p_reduce (262)
+ASSIGN (263) 37
+ITER_ASSIGN (264) 18
+PLUS_ASSIGN (265) 38
+MINUS_ASSIGN (266) 39
+MULTI_ASSIGN (267) 40
+DIV_ASSIGN (268) 41
+MAP (269) 30
+MINUS (270) 49
+PLUS (271) 48
+MAX (272)
+MIN (273)
+MOD (274)
+DIV (275) 51
+TIMES (276) 50 59
+RSHIFT (277)
+LSHIFT (278)
+NEQ (279)
+EQ (280) 52
+GE (281) 54
+GT (282) 55
+LE (283) 53
+LT (284) 56
+XOR (285)
+OR (286)
+AND (287)
+NOT (288)
+CLOSEBLOCK (289) 22
+OPENBLOCK (290) 22
+CLOSEBRACKET (291) 19 20 60 63
+OPENBRACKET (292) 19 20 60 61
+CLOSEPAR (293) 36 44 61 62
+OPENPAR (294) 32 33 44 62 63
+SEMI (295) 23
+COLON (296) 16 17 57 58
+COMA (297) 11 13 15 34 35
+SELECT (298)
+RAND (299)
+FLOOR (300)
+CEIL (301)
+TRUNC (302)
+ROUND (303)
+LOG (304)
+SQRT (305)
+EXP (306)
+SIN (307)
+COS (308)
+TAN (309)
+ASIN (310)
+ACOS (311)
+ATAN (312)
+SINH (313)
+COSH (314)
+TANH (315)
+I_TO_F (316)
+I_TO_B (317)
+B_TO_I (318)
+PLUS_SCAN (319)
+MULT_SCAN (320)
+MAX_SCAN (321)
+MIN_SCAN (322)
+AND_SCAN (323)
+OR_SCAN (324)
+XOR_SCAN (325)
+PLUS_REDUCE (326)
+MULT_REDUCE (327)
+MAX_REDUCE (328)
+MIN_REDUCE (329)
+AND_REDUCE (330)
+OR_REDUCE (331)
+XOR_REDUCE (332)
+PERMUTE (333)
+DPERMUTE (334)
+FPERMUTE (335)
+BPERMUTE (336)
+BFPERMUTE (337)
+DFPERMUTE (338)
+EXTRACT (339)
+REPLACE (340)
+DIST (341)
+INDEX (342)
+LENGTH (343)
+MAKE_SEGDES (344)
+LENGTHS (345)
+COPY (346)
+POP (347)
+CPOP (348)
+PAIR (349)
+UNPAIR (350)
+CALL (351)
+RET (352)
+FUNC (353)
+IF (354)
+ELSE (355)
+ENDIF (356)
+CONST (357)
+EXIT (358)
+START_TIMER (359)
+STOP_TIMER (360)
+READ (361)
+WRITE (362)
+FOPEN (363)
+FCLOSE (364)
+FREAD (365)
+FREAD_CHAR (366)
+FWRITE (367)
+SPAWN (368)
+SRAND (369)
+INT (370)
+BOOL (371)
+FLOAT (372) 46
+SEGDES (373)
+CHAR (374)
+V_TRUE (375)
+V_FALSE (376)
+NULL_STREAM (377)
+STDIN (378)
+STDOUT (379)
+STDERR (380)
+MAIN (381)
+BEGIN_VECTOR (382)
+END_VECTOR (383)
+INTEGER (384) 45
+REAL (385)
+ASTRING (386) 47
+IDENTIFIER (387) 5 16 17 18 32 33 42 43
+INPUT_INFO (388)
+OUTPUT_INFO (389)
+INPUT (390) 10
+OUTPUT (391) 12
+INOUT (392) 14
+
+
+Nonterminals, with rules where they appear
+
+$accept (138)
+    on left: 0
+program (139)
+    on left: 1, on right: 0
+functions (140)
+    on left: 2 3, on right: 1 3
+function (141)
+    on left: 5, on right: 3
+@1 (142)
+    on left: 4, on right: 5
+function_prefix (143)
+    on left: 6 7 8 9, on right: 5 7 8 9
+inputs (144)
+    on left: 10 11, on right: 7 11
+outputs (145)
+    on left: 12 13, on right: 8 13
+inouts (146)
+    on left: 14 15, on right: 9 15
+definition (147)
+    on left: 16 17 18, on right: 10 11 12 13 14 15 26 35
+brackets (148)
+    on left: 19 20, on right: 17 20 43
+block (149)
+    on left: 22, on right: 5 30
+@2 (150)
+    on left: 21, on right: 22
+statements (151)
+    on left: 23 24, on right: 22 23
+statement (152)
+    on left: 25 26 27 28, on right: 23
+map_block (153)
+    on left: 30 31, on right: 27 31
+@3 (154)
+    on left: 29, on right: 30
+call_function_prefix (155)
+    on left: 32 33 34 35, on right: 34 35 36
+call_function (156)
+    on left: 36, on right: 28 31
+assignment (157)
+    on left: 37 38 39 40 41, on right: 25
+aexpr (158)
+    on left: 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56,
+    on right: 19 20 33 34 37 38 39 40 41 44 48 49 50 51 52 53 54 55
+    56 57 58
+range_internal (159)
+    on left: 57 58 59, on right: 58 60 61 62 63
+range (160)
+    on left: 60 61 62 63, on right: 18
+
+
+state 0
+
+    0 $accept: . program $end
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (functions)
+
+    program    go to state 2
+    functions  go to state 3
+    function   go to state 4
+
+
+state 1
+
+    5 function: FUNCTION . IDENTIFIER @1 function_prefix block
+
+    IDENTIFIER  shift, and go to state 5
+
+
+state 2
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 6
+
+
+state 3
+
+    1 program: functions .
+
+    $default  reduce using rule 1 (program)
+
+
+state 4
+
+    3 functions: function . functions
+
+    FUNCTION  shift, and go to state 1
+
+    $default  reduce using rule 2 (functions)
+
+    functions  go to state 7
+    function   go to state 4
+
+
+state 5
+
+    5 function: FUNCTION IDENTIFIER . @1 function_prefix block
+
+    $default  reduce using rule 4 (@1)
+
+    @1  go to state 8
+
+
+state 6
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 7
+
+    3 functions: function functions .
+
+    $default  reduce using rule 3 (functions)
+
+
+state 8
+
+    5 function: FUNCTION IDENTIFIER @1 . function_prefix block
+
+    $default  reduce using rule 6 (function_prefix)
+
+    function_prefix  go to state 9
+
+
+state 9
+
+    5 function: FUNCTION IDENTIFIER @1 function_prefix . block
+    7 function_prefix: function_prefix . inputs
+    8                | function_prefix . outputs
+    9                | function_prefix . inouts
+
+    OPENBLOCK  shift, and go to state 10
+    INPUT      shift, and go to state 11
+    OUTPUT     shift, and go to state 12
+    INOUT      shift, and go to state 13
+
+    inputs   go to state 14
+    outputs  go to state 15
+    inouts   go to state 16
+    block    go to state 17
+
+
+state 10
+
+   22 block: OPENBLOCK . @2 statements CLOSEBLOCK
+
+    $default  reduce using rule 21 (@2)
+
+    @2  go to state 18
+
+
+state 11
+
+   10 inputs: INPUT . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 20
+
+
+state 12
+
+   12 outputs: OUTPUT . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 21
+
+
+state 13
+
+   14 inouts: INOUT . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 22
+
+
+state 14
+
+    7 function_prefix: function_prefix inputs .
+   11 inputs: inputs . COMA definition
+
+    COMA  shift, and go to state 23
+
+    $default  reduce using rule 7 (function_prefix)
+
+
+state 15
+
+    8 function_prefix: function_prefix outputs .
+   13 outputs: outputs . COMA definition
+
+    COMA  shift, and go to state 24
+
+    $default  reduce using rule 8 (function_prefix)
+
+
+state 16
+
+    9 function_prefix: function_prefix inouts .
+   15 inouts: inouts . COMA definition
+
+    COMA  shift, and go to state 25
+
+    $default  reduce using rule 9 (function_prefix)
+
+
+state 17
+
+    5 function: FUNCTION IDENTIFIER @1 function_prefix block .
+
+    $default  reduce using rule 5 (function)
+
+
+state 18
+
+   22 block: OPENBLOCK @2 . statements CLOSEBLOCK
+
+    MAP         shift, and go to state 26
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 31
+
+    $default  reduce using rule 24 (statements)
+
+    definition            go to state 32
+    statements            go to state 33
+    statement             go to state 34
+    map_block             go to state 35
+    call_function_prefix  go to state 36
+    call_function         go to state 37
+    assignment            go to state 38
+    aexpr                 go to state 39
+
+
+state 19
+
+   16 definition: IDENTIFIER . COLON IDENTIFIER
+   17           | IDENTIFIER . brackets COLON IDENTIFIER
+   18           | IDENTIFIER . ITER_ASSIGN range
+
+    ITER_ASSIGN  shift, and go to state 40
+    OPENBRACKET  shift, and go to state 41
+    COLON        shift, and go to state 42
+
+    brackets  go to state 43
+
+
+state 20
+
+   10 inputs: INPUT definition .
+
+    $default  reduce using rule 10 (inputs)
+
+
+state 21
+
+   12 outputs: OUTPUT definition .
+
+    $default  reduce using rule 12 (outputs)
+
+
+state 22
+
+   14 inouts: INOUT definition .
+
+    $default  reduce using rule 14 (inouts)
+
+
+state 23
+
+   11 inputs: inputs COMA . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 44
+
+
+state 24
+
+   13 outputs: outputs COMA . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 45
+
+
+state 25
+
+   15 inouts: inouts COMA . definition
+
+    IDENTIFIER  shift, and go to state 19
+
+    definition  go to state 46
+
+
+state 26
+
+   30 map_block: MAP . @3 block
+
+    $default  reduce using rule 29 (@3)
+
+    @3  go to state 47
+
+
+state 27
+
+   44 aexpr: OPENPAR . aexpr CLOSEPAR
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 49
+
+
+state 28
+
+   46 aexpr: FLOAT .
+
+    $default  reduce using rule 46 (aexpr)
+
+
+state 29
+
+   45 aexpr: INTEGER .
+
+    $default  reduce using rule 45 (aexpr)
+
+
+state 30
+
+   47 aexpr: ASTRING .
+
+    $default  reduce using rule 47 (aexpr)
+
+
+state 31
+
+   16 definition: IDENTIFIER . COLON IDENTIFIER
+   17           | IDENTIFIER . brackets COLON IDENTIFIER
+   18           | IDENTIFIER . ITER_ASSIGN range
+   32 call_function_prefix: IDENTIFIER . OPENPAR
+   33                     | IDENTIFIER . OPENPAR aexpr
+   42 aexpr: IDENTIFIER .
+   43      | IDENTIFIER . brackets
+
+    ITER_ASSIGN  shift, and go to state 40
+    OPENBRACKET  shift, and go to state 41
+    OPENPAR      shift, and go to state 50
+    COLON        shift, and go to state 42
+
+    $default  reduce using rule 42 (aexpr)
+
+    brackets  go to state 51
+
+
+state 32
+
+   26 statement: definition .
+
+    $default  reduce using rule 26 (statement)
+
+
+state 33
+
+   22 block: OPENBLOCK @2 statements . CLOSEBLOCK
+
+    CLOSEBLOCK  shift, and go to state 52
+
+
+state 34
+
+   23 statements: statement . SEMI statements
+
+    SEMI  shift, and go to state 53
+
+
+state 35
+
+   27 statement: map_block .
+   31 map_block: map_block . call_function
+
+    IDENTIFIER  shift, and go to state 54
+
+    $default  reduce using rule 27 (statement)
+
+    call_function_prefix  go to state 36
+    call_function         go to state 55
+
+
+state 36
+
+   34 call_function_prefix: call_function_prefix . COMA aexpr
+   35                     | call_function_prefix . COMA definition
+   36 call_function: call_function_prefix . CLOSEPAR
+
+    CLOSEPAR  shift, and go to state 56
+    COMA      shift, and go to state 57
+
+
+state 37
+
+   28 statement: call_function .
+
+    $default  reduce using rule 28 (statement)
+
+
+state 38
+
+   25 statement: assignment .
+
+    $default  reduce using rule 25 (statement)
+
+
+state 39
+
+   37 assignment: aexpr . ASSIGN aexpr
+   38           | aexpr . PLUS_ASSIGN aexpr
+   39           | aexpr . MINUS_ASSIGN aexpr
+   40           | aexpr . MULTI_ASSIGN aexpr
+   41           | aexpr . DIV_ASSIGN aexpr
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    ASSIGN        shift, and go to state 58
+    PLUS_ASSIGN   shift, and go to state 59
+    MINUS_ASSIGN  shift, and go to state 60
+    MULTI_ASSIGN  shift, and go to state 61
+    DIV_ASSIGN    shift, and go to state 62
+    MINUS         shift, and go to state 63
+    PLUS          shift, and go to state 64
+    DIV           shift, and go to state 65
+    TIMES         shift, and go to state 66
+    EQ            shift, and go to state 67
+    GE            shift, and go to state 68
+    GT            shift, and go to state 69
+    LE            shift, and go to state 70
+    LT            shift, and go to state 71
+
+
+state 40
+
+   18 definition: IDENTIFIER ITER_ASSIGN . range
+
+    OPENBRACKET  shift, and go to state 72
+    OPENPAR      shift, and go to state 73
+
+    range  go to state 74
+
+
+state 41
+
+   19 brackets: OPENBRACKET . aexpr CLOSEBRACKET
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 75
+
+
+state 42
+
+   16 definition: IDENTIFIER COLON . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 76
+
+
+state 43
+
+   17 definition: IDENTIFIER brackets . COLON IDENTIFIER
+   20 brackets: brackets . OPENBRACKET aexpr CLOSEBRACKET
+
+    OPENBRACKET  shift, and go to state 77
+    COLON        shift, and go to state 78
+
+
+state 44
+
+   11 inputs: inputs COMA definition .
+
+    $default  reduce using rule 11 (inputs)
+
+
+state 45
+
+   13 outputs: outputs COMA definition .
+
+    $default  reduce using rule 13 (outputs)
+
+
+state 46
+
+   15 inouts: inouts COMA definition .
+
+    $default  reduce using rule 15 (inouts)
+
+
+state 47
+
+   30 map_block: MAP @3 . block
+
+    OPENBLOCK  shift, and go to state 10
+
+    block  go to state 79
+
+
+state 48
+
+   42 aexpr: IDENTIFIER .
+   43      | IDENTIFIER . brackets
+
+    OPENBRACKET  shift, and go to state 41
+
+    $default  reduce using rule 42 (aexpr)
+
+    brackets  go to state 80
+
+
+state 49
+
+   44 aexpr: OPENPAR aexpr . CLOSEPAR
+   48      | aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS     shift, and go to state 63
+    PLUS      shift, and go to state 64
+    DIV       shift, and go to state 65
+    TIMES     shift, and go to state 66
+    EQ        shift, and go to state 67
+    GE        shift, and go to state 68
+    GT        shift, and go to state 69
+    LE        shift, and go to state 70
+    LT        shift, and go to state 71
+    CLOSEPAR  shift, and go to state 81
+
+
+state 50
+
+   32 call_function_prefix: IDENTIFIER OPENPAR .
+   33                     | IDENTIFIER OPENPAR . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    $default  reduce using rule 32 (call_function_prefix)
+
+    aexpr  go to state 82
+
+
+state 51
+
+   17 definition: IDENTIFIER brackets . COLON IDENTIFIER
+   20 brackets: brackets . OPENBRACKET aexpr CLOSEBRACKET
+   43 aexpr: IDENTIFIER brackets .
+
+    OPENBRACKET  shift, and go to state 77
+    COLON        shift, and go to state 78
+
+    $default  reduce using rule 43 (aexpr)
+
+
+state 52
+
+   22 block: OPENBLOCK @2 statements CLOSEBLOCK .
+
+    $default  reduce using rule 22 (block)
+
+
+state 53
+
+   23 statements: statement SEMI . statements
+
+    MAP         shift, and go to state 26
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 31
+
+    $default  reduce using rule 24 (statements)
+
+    definition            go to state 32
+    statements            go to state 83
+    statement             go to state 34
+    map_block             go to state 35
+    call_function_prefix  go to state 36
+    call_function         go to state 37
+    assignment            go to state 38
+    aexpr                 go to state 39
+
+
+state 54
+
+   32 call_function_prefix: IDENTIFIER . OPENPAR
+   33                     | IDENTIFIER . OPENPAR aexpr
+
+    OPENPAR  shift, and go to state 50
+
+
+state 55
+
+   31 map_block: map_block call_function .
+
+    $default  reduce using rule 31 (map_block)
+
+
+state 56
+
+   36 call_function: call_function_prefix CLOSEPAR .
+
+    $default  reduce using rule 36 (call_function)
+
+
+state 57
+
+   34 call_function_prefix: call_function_prefix COMA . aexpr
+   35                     | call_function_prefix COMA . definition
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 84
+
+    definition  go to state 85
+    aexpr       go to state 86
+
+
+state 58
+
+   37 assignment: aexpr ASSIGN . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 87
+
+
+state 59
+
+   38 assignment: aexpr PLUS_ASSIGN . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 88
+
+
+state 60
+
+   39 assignment: aexpr MINUS_ASSIGN . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 89
+
+
+state 61
+
+   40 assignment: aexpr MULTI_ASSIGN . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 90
+
+
+state 62
+
+   41 assignment: aexpr DIV_ASSIGN . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 91
+
+
+state 63
+
+   49 aexpr: aexpr MINUS . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 92
+
+
+state 64
+
+   48 aexpr: aexpr PLUS . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 93
+
+
+state 65
+
+   51 aexpr: aexpr DIV . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 94
+
+
+state 66
+
+   50 aexpr: aexpr TIMES . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 95
+
+
+state 67
+
+   52 aexpr: aexpr EQ . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 96
+
+
+state 68
+
+   54 aexpr: aexpr GE . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 97
+
+
+state 69
+
+   55 aexpr: aexpr GT . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 98
+
+
+state 70
+
+   53 aexpr: aexpr LE . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 99
+
+
+state 71
+
+   56 aexpr: aexpr LT . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 100
+
+
+state 72
+
+   60 range: OPENBRACKET . range_internal CLOSEBRACKET
+   61      | OPENBRACKET . range_internal CLOSEPAR
+
+    TIMES       shift, and go to state 101
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr           go to state 102
+    range_internal  go to state 103
+
+
+state 73
+
+   62 range: OPENPAR . range_internal CLOSEPAR
+   63      | OPENPAR . range_internal CLOSEBRACKET
+
+    TIMES       shift, and go to state 101
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr           go to state 102
+    range_internal  go to state 104
+
+
+state 74
+
+   18 definition: IDENTIFIER ITER_ASSIGN range .
+
+    $default  reduce using rule 18 (definition)
+
+
+state 75
+
+   19 brackets: OPENBRACKET aexpr . CLOSEBRACKET
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS         shift, and go to state 63
+    PLUS          shift, and go to state 64
+    DIV           shift, and go to state 65
+    TIMES         shift, and go to state 66
+    EQ            shift, and go to state 67
+    GE            shift, and go to state 68
+    GT            shift, and go to state 69
+    LE            shift, and go to state 70
+    LT            shift, and go to state 71
+    CLOSEBRACKET  shift, and go to state 105
+
+
+state 76
+
+   16 definition: IDENTIFIER COLON IDENTIFIER .
+
+    $default  reduce using rule 16 (definition)
+
+
+state 77
+
+   20 brackets: brackets OPENBRACKET . aexpr CLOSEBRACKET
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 106
+
+
+state 78
+
+   17 definition: IDENTIFIER brackets COLON . IDENTIFIER
+
+    IDENTIFIER  shift, and go to state 107
+
+
+state 79
+
+   30 map_block: MAP @3 block .
+
+    $default  reduce using rule 30 (map_block)
+
+
+state 80
+
+   20 brackets: brackets . OPENBRACKET aexpr CLOSEBRACKET
+   43 aexpr: IDENTIFIER brackets .
+
+    OPENBRACKET  shift, and go to state 77
+
+    $default  reduce using rule 43 (aexpr)
+
+
+state 81
+
+   44 aexpr: OPENPAR aexpr CLOSEPAR .
+
+    $default  reduce using rule 44 (aexpr)
+
+
+state 82
+
+   33 call_function_prefix: IDENTIFIER OPENPAR aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 33 (call_function_prefix)
+
+
+state 83
+
+   23 statements: statement SEMI statements .
+
+    $default  reduce using rule 23 (statements)
+
+
+state 84
+
+   16 definition: IDENTIFIER . COLON IDENTIFIER
+   17           | IDENTIFIER . brackets COLON IDENTIFIER
+   18           | IDENTIFIER . ITER_ASSIGN range
+   42 aexpr: IDENTIFIER .
+   43      | IDENTIFIER . brackets
+
+    ITER_ASSIGN  shift, and go to state 40
+    OPENBRACKET  shift, and go to state 41
+    COLON        shift, and go to state 42
+
+    $default  reduce using rule 42 (aexpr)
+
+    brackets  go to state 51
+
+
+state 85
+
+   35 call_function_prefix: call_function_prefix COMA definition .
+
+    $default  reduce using rule 35 (call_function_prefix)
+
+
+state 86
+
+   34 call_function_prefix: call_function_prefix COMA aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 34 (call_function_prefix)
+
+
+state 87
+
+   37 assignment: aexpr ASSIGN aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 37 (assignment)
+
+
+state 88
+
+   38 assignment: aexpr PLUS_ASSIGN aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 38 (assignment)
+
+
+state 89
+
+   39 assignment: aexpr MINUS_ASSIGN aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 39 (assignment)
+
+
+state 90
+
+   40 assignment: aexpr MULTI_ASSIGN aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 40 (assignment)
+
+
+state 91
+
+   41 assignment: aexpr DIV_ASSIGN aexpr .
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 41 (assignment)
+
+
+state 92
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   49      | aexpr MINUS aexpr .
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 49 (aexpr)
+
+
+state 93
+
+   48 aexpr: aexpr . PLUS aexpr
+   48      | aexpr PLUS aexpr .
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 48 (aexpr)
+
+
+state 94
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   51      | aexpr DIV aexpr .
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    EQ  shift, and go to state 67
+    GE  shift, and go to state 68
+    GT  shift, and go to state 69
+    LE  shift, and go to state 70
+    LT  shift, and go to state 71
+
+    $default  reduce using rule 51 (aexpr)
+
+
+state 95
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   50      | aexpr TIMES aexpr .
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    EQ  shift, and go to state 67
+    GE  shift, and go to state 68
+    GT  shift, and go to state 69
+    LE  shift, and go to state 70
+    LT  shift, and go to state 71
+
+    $default  reduce using rule 50 (aexpr)
+
+
+state 96
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   52      | aexpr EQ aexpr .
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    $default  reduce using rule 52 (aexpr)
+
+
+state 97
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   54      | aexpr GE aexpr .
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    $default  reduce using rule 54 (aexpr)
+
+
+state 98
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   55      | aexpr GT aexpr .
+   56      | aexpr . LT aexpr
+
+    $default  reduce using rule 55 (aexpr)
+
+
+state 99
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   53      | aexpr LE aexpr .
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    $default  reduce using rule 53 (aexpr)
+
+
+state 100
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+   56      | aexpr LT aexpr .
+
+    $default  reduce using rule 56 (aexpr)
+
+
+state 101
+
+   59 range_internal: TIMES .
+
+    $default  reduce using rule 59 (range_internal)
+
+
+state 102
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+   57 range_internal: aexpr . COLON aexpr
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+    COLON  shift, and go to state 108
+
+
+state 103
+
+   58 range_internal: range_internal . COLON aexpr
+   60 range: OPENBRACKET range_internal . CLOSEBRACKET
+   61      | OPENBRACKET range_internal . CLOSEPAR
+
+    CLOSEBRACKET  shift, and go to state 109
+    CLOSEPAR      shift, and go to state 110
+    COLON         shift, and go to state 111
+
+
+state 104
+
+   58 range_internal: range_internal . COLON aexpr
+   62 range: OPENPAR range_internal . CLOSEPAR
+   63      | OPENPAR range_internal . CLOSEBRACKET
+
+    CLOSEBRACKET  shift, and go to state 112
+    CLOSEPAR      shift, and go to state 113
+    COLON         shift, and go to state 111
+
+
+state 105
+
+   19 brackets: OPENBRACKET aexpr CLOSEBRACKET .
+
+    $default  reduce using rule 19 (brackets)
+
+
+state 106
+
+   20 brackets: brackets OPENBRACKET aexpr . CLOSEBRACKET
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+
+    MINUS         shift, and go to state 63
+    PLUS          shift, and go to state 64
+    DIV           shift, and go to state 65
+    TIMES         shift, and go to state 66
+    EQ            shift, and go to state 67
+    GE            shift, and go to state 68
+    GT            shift, and go to state 69
+    LE            shift, and go to state 70
+    LT            shift, and go to state 71
+    CLOSEBRACKET  shift, and go to state 114
+
+
+state 107
+
+   17 definition: IDENTIFIER brackets COLON IDENTIFIER .
+
+    $default  reduce using rule 17 (definition)
+
+
+state 108
+
+   57 range_internal: aexpr COLON . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 115
+
+
+state 109
+
+   60 range: OPENBRACKET range_internal CLOSEBRACKET .
+
+    $default  reduce using rule 60 (range)
+
+
+state 110
+
+   61 range: OPENBRACKET range_internal CLOSEPAR .
+
+    $default  reduce using rule 61 (range)
+
+
+state 111
+
+   58 range_internal: range_internal COLON . aexpr
+
+    OPENPAR     shift, and go to state 27
+    FLOAT       shift, and go to state 28
+    INTEGER     shift, and go to state 29
+    ASTRING     shift, and go to state 30
+    IDENTIFIER  shift, and go to state 48
+
+    aexpr  go to state 116
+
+
+state 112
+
+   63 range: OPENPAR range_internal CLOSEBRACKET .
+
+    $default  reduce using rule 63 (range)
+
+
+state 113
+
+   62 range: OPENPAR range_internal CLOSEPAR .
+
+    $default  reduce using rule 62 (range)
+
+
+state 114
+
+   20 brackets: brackets OPENBRACKET aexpr CLOSEBRACKET .
+
+    $default  reduce using rule 20 (brackets)
+
+
+state 115
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+   57 range_internal: aexpr COLON aexpr .
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 57 (range_internal)
+
+
+state 116
+
+   48 aexpr: aexpr . PLUS aexpr
+   49      | aexpr . MINUS aexpr
+   50      | aexpr . TIMES aexpr
+   51      | aexpr . DIV aexpr
+   52      | aexpr . EQ aexpr
+   53      | aexpr . LE aexpr
+   54      | aexpr . GE aexpr
+   55      | aexpr . GT aexpr
+   56      | aexpr . LT aexpr
+   58 range_internal: range_internal COLON aexpr .
+
+    MINUS  shift, and go to state 63
+    PLUS   shift, and go to state 64
+    DIV    shift, and go to state 65
+    TIMES  shift, and go to state 66
+    EQ     shift, and go to state 67
+    GE     shift, and go to state 68
+    GT     shift, and go to state 69
+    LE     shift, and go to state 70
+    LT     shift, and go to state 71
+
+    $default  reduce using rule 58 (range_internal)

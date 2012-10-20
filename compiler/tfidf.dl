@@ -1,0 +1,17 @@
+function tf_idf
+input: _numFiles:int, buffer[_numFiles][MAX_BUFFER_SIZE]:char, fileSize[_numFiles]:int
+output:
+{
+ map{
+    fileId := [0 : _numFiles);
+    map {
+        bulk := [0, (_size-BLOCK_SIZE+1)/BLOCK_SIZE);
+        char *b = &buffer[fileId][0];
+        _size = fileSize[fileId];
+        b += BLOCK_SIZE * bulk;
+        map {
+        }
+        
+    }
+ }
+}

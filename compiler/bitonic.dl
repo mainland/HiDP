@@ -1,0 +1,13 @@
+#bitonic sort
+
+function bitonic_sort
+inout: a1[size]:float  a2[size]:float
+{
+   logsize = size;
+   while (logsize > 1)
+   {
+       
+       logsize /= 2;
+   } 
+   
+}
